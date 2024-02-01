@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/index.js",
+    "start:Dee": "npm run start --  --username Dee",
     "lint": "eslint ./src --fix"
   },
   "repository": {
