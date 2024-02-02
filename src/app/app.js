@@ -3,6 +3,7 @@ import { createInterface } from 'node:readline/promises'
 import { startFlags } from './constants/flags.js'
 import { gatherSystemInfo, os } from './modules/os.js'
 import { InvalidInputError } from './utils/invalid-input-error.js'
+import { logger } from './utils/logger.js'
 
 const { stdin: input, stdout: output } = process
 
@@ -12,7 +13,7 @@ export class App {
   #workingDir
   #eol
   #username = ''
-  #io = createInterface({ input, output, prompt: '>> ' })
+  #io = createInterface({ input, output, prompt: '\u00bb' })
   #commands = {
     '.exit': () => this.#exit(),
   }
@@ -52,27 +53,27 @@ export class App {
   #showGreeting() {
     this.#getUserName()
     if (this.#username === defaultUserName) {
-      console.log(
-        `Please specify your username with the --username argument.${this.#eol}Example: npm run start -- --username=your_username`,
+      logger.hint(
+        `\tPlease specify your username with the --username argument.${this.#eol}\tExample: npm run start -- --username=your_username`,
       )
     }
-    console.log(`Welcome to the File Manager, ${this.#username}!`)
+    logger.success(`Welcome to the File Manager, ${this.#username}!`)
   }
 
   #showGoodbye() {
-    console.log(`${this.#eol}Thank you for using File Manager, ${this.#username}, goodbye!`)
+    logger.success(`${this.#eol}Thank you for using File Manager, ${this.#username}, goodbye!`)
   }
 
   #showInvalidInputMessage() {
-    console.log('Invalid input')
+    logger.error('Invalid input')
   }
 
   #showOperationFailedMessage() {
-    console.log('Operation failed')
+    logger.error('Operation failed')
   }
 
   #showWorkingDir() {
-    console.log(`You are currently in ${this.#workingDir}`)
+    logger.info(`You are currently in ${this.#workingDir}`)
   }
 
   #listenInput() {
@@ -92,7 +93,7 @@ export class App {
       }
       const operationResult = await commandHandler(args)
       if (operationResult) {
-        console.log(operationResult)
+        logger.log(operationResult)
       }
     } catch (error) {
       if (error instanceof InvalidInputError) {
