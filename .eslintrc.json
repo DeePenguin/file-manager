@@ -11,67 +11,7 @@
   "plugins": ["prettier", "import"],
   "extends": ["prettier", "eslint:recommended", "plugin:import/recommended"],
   "rules": {
-    // "@typescript-eslint/naming-convention": [
-    //   2,
-    //   {
-    //     "selector": "default",
-    //     "format": ["strictCamelCase"],
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": "variable",
-    //     "format": ["strictCamelCase", "UPPER_CASE"],
-    //     "modifiers": ["const"],
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": "variable",
-    //     "format": ["strictCamelCase", "UPPER_CASE"],
-    //     "modifiers": ["const"],
-    //     "types": ["boolean", "string", "number"],
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": ["variable", "property"],
-    //     "types": ["boolean"],
-    //     "format": ["PascalCase"],
-    //     "prefix": ["is", "has", "should", "can", "will"],
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": "variable",
-    //     "modifiers": ["destructured"],
-    //     "format": null
-    //   },
-    //   {
-    //     "selector": "objectLiteralProperty",
-    //     "format": null,
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": "parameter",
-    //     "format": ["strictCamelCase"],
-    //     "leadingUnderscore": "allow",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": ["typeLike", "enum"],
-    //     "format": ["PascalCase"],
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   },
-    //   {
-    //     "selector": "enumMember",
-    //     "format": ["UPPER_CASE"],
-    //     "leadingUnderscore": "forbid",
-    //     "trailingUnderscore": "forbid"
-    //   }
-    // ],
+    "camelcase": ["error", { "ignoreDestructuring": true }],
     "no-shadow": 0,
     "no-return-await": 0,
     "no-use-before-define": 0,
