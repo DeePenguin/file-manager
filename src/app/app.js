@@ -1,5 +1,6 @@
 import { createInterface } from 'node:readline/promises'
 
+import { cliArgsRegex } from './constants/cli-args-regex.js'
 import { startFlags } from './constants/flags.js'
 import { navigation } from './modules/navigation.js'
 import { gatherSystemInfo, os } from './modules/os.js'
@@ -83,8 +84,8 @@ export class App {
 
   async #handleInput(input) {
     try {
-      const [command, ...args] = input.trim().split(' ')
-      const commandHandler = this.#commands[command] || null
+      const [command, ...args] = input.match(cliArgsRegex)
+      const commandHandler = this.#commands[command]
       if (!commandHandler) {
         throw new InvalidInputError()
       }

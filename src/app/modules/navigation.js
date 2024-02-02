@@ -1,6 +1,8 @@
 import { stat } from 'node:fs/promises'
-import { normalize, resolve } from 'node:path'
+import { resolve } from 'node:path'
 
+import { InvalidInputError } from '../utils/invalid-input-error.js'
+import { pathResolver } from '../utils/path-resolver.js'
 import { printDirContent } from '../utils/print-dir-content.js'
 
 const state = {
@@ -8,17 +10,16 @@ const state = {
 }
 
 const resolveCwd = async args => {
-  try {
-    const path = resolve(state.cwd, normalize(args.join(' ')))
-    const pathStat = await stat(path)
-    const isDir = pathStat.isDirectory()
-    if (!isDir) {
-      throw new Error('not a directory')
-    }
-    state.cwd = path
-  } catch (err) {
-    throw new Error('invalid path')
+  if (args.length !== 1) {
+    throw new InvalidInputError('invalid number of arguments')
   }
+  const path = pathResolver(state.cwd, ...args)
+  const pathStat = await stat(path)
+  const isDir = pathStat.isDirectory()
+  if (!isDir) {
+    throw new Error('not a directory')
+  }
+  state.cwd = path
 }
 
 export const navigation = {
