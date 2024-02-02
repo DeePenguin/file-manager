@@ -1,6 +1,7 @@
 import { createInterface } from 'node:readline/promises'
 
 import { startFlags } from './constants/flags.js'
+import { navigation } from './modules/navigation.js'
 import { gatherSystemInfo, os } from './modules/os.js'
 import { InvalidInputError } from './utils/invalid-input-error.js'
 import { logger } from './utils/logger.js'
@@ -10,8 +11,8 @@ const { stdin: input, stdout: output } = process
 const defaultUserName = 'Username'
 
 export class App {
-  #workingDir
-  #eol
+  #nav = {}
+  #os = {}
   #username = ''
   #io = createInterface({ input, output, prompt: '\u00bb' })
   #commands = {
@@ -19,6 +20,7 @@ export class App {
   }
   #modules = {
     os,
+    navigation,
   }
 
   run() {
@@ -34,15 +36,10 @@ export class App {
   }
 
   #configure() {
-    this.#gatherSystemInfo()
+    this.#os = gatherSystemInfo()
+    this.#nav = this.#modules.navigation.init(this.#os.homedir)
     const commandList = Object.values(this.#modules).map(module => module.getCommandsList())
     Object.assign(this.#commands, ...commandList)
-  }
-
-  #gatherSystemInfo() {
-    const { homedir, eol } = gatherSystemInfo()
-    this.#workingDir = homedir
-    this.#eol = eol
   }
 
   #getUserName() {
@@ -54,14 +51,14 @@ export class App {
     this.#getUserName()
     if (this.#username === defaultUserName) {
       logger.hint(
-        `\tPlease specify your username with the --username argument.${this.#eol}\tExample: npm run start -- --username=your_username`,
+        `\tPlease specify your username with the --username argument.${this.#os.eol}\tExample: npm run start -- --username=your_username`,
       )
     }
     logger.success(`Welcome to the File Manager, ${this.#username}!`)
   }
 
   #showGoodbye() {
-    logger.success(`${this.#eol}Thank you for using File Manager, ${this.#username}, goodbye!`)
+    logger.success(`${this.#os.eol}Thank you for using File Manager, ${this.#username}, goodbye!`)
   }
 
   #showInvalidInputMessage() {
@@ -73,7 +70,7 @@ export class App {
   }
 
   #showWorkingDir() {
-    logger.info(`You are currently in ${this.#workingDir}`)
+    logger.info(`You are currently in ${this.#nav.cwd}`)
   }
 
   #listenInput() {

@@ -24,7 +24,7 @@
     "default-case": 2,
     "default-case-last": 2,
     "object-shorthand": 2,
-    "require-atomic-updates": 2,
+    "require-atomic-updates": [2, { "allowProperties": true }],
     "complexity": [2, 10],
     "max-depth": [2, 4],
     "max-statements": [2, 20],
