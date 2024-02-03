@@ -27,7 +27,7 @@ export const navigation = {
     up: () => {
       state.cwd = resolve(state.cwd, '..')
     },
-    cd: async args => await resolveCwd(args),
+    cd: async (_, ...args) => await resolveCwd(args),
     ls: async () => await printDirContent(state.cwd),
   }),
   init: cwd => {

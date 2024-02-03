@@ -34,6 +34,6 @@ export const gatherSystemInfo = () => ({
 
 export const os = {
   getCommandsList: () => ({
-    os: args => commandHandler(args),
+    os: (_, ...args) => commandHandler(args),
   }),
 }

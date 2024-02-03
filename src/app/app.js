@@ -89,7 +89,7 @@ export class App {
       if (!commandHandler) {
         throw new InvalidInputError()
       }
-      const operationResult = await commandHandler(args)
+      const operationResult = await commandHandler(this.#nav.cwd, ...args)
       if (operationResult) {
         logger.log(operationResult)
       }
