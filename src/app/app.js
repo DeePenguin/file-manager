@@ -5,6 +5,7 @@ import { startFlags } from './constants/flags.js'
 import { hash } from './modules/hash.js'
 import { navigation } from './modules/navigation.js'
 import { gatherSystemInfo, os } from './modules/os.js'
+import { zlib } from './modules/zlib.js'
 import { InvalidInputError } from './utils/invalid-input-error.js'
 import { logger } from './utils/logger.js'
 
@@ -24,6 +25,7 @@ export class App {
     os,
     navigation,
     hash,
+    zlib,
   }
 
   run() {
