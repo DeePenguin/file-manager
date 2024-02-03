@@ -2,6 +2,7 @@ import { createInterface } from 'node:readline/promises'
 
 import { cliArgsRegex } from './constants/cli-args-regex.js'
 import { startFlags } from './constants/flags.js'
+import { hash } from './modules/hash.js'
 import { navigation } from './modules/navigation.js'
 import { gatherSystemInfo, os } from './modules/os.js'
 import { InvalidInputError } from './utils/invalid-input-error.js'
@@ -22,6 +23,7 @@ export class App {
   #modules = {
     os,
     navigation,
+    hash,
   }
 
   run() {
@@ -89,7 +91,7 @@ export class App {
       if (!commandHandler) {
         throw new InvalidInputError()
       }
-      const operationResult = await commandHandler(this.#nav.cwd, ...args)
+      const operationResult = await commandHandler({ cwd: this.#nav.cwd, eol: this.#os.eol }, ...args)
       if (operationResult) {
         logger.log(operationResult)
       }
