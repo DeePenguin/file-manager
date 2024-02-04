@@ -7,13 +7,14 @@ import { InvalidInputError } from '../utils/invalid-input-error.js'
 import { pathResolver } from '../utils/path-resolver.js'
 import { wsToLogger } from '../utils/ws-to-logger.js'
 
-const hashTs = new Transform({
-  transform(chunk, _, callback) {
-    const hashDigest = createHash('sha256').update(chunk).digest('hex')
-    this.push(hashDigest)
-    callback()
-  },
-})
+const createHashStream = () =>
+  new Transform({
+    transform(chunk, _, callback) {
+      const hashDigest = createHash('sha256').update(chunk).digest('hex')
+      this.push(hashDigest)
+      callback()
+    },
+  })
 
 const calculateHash = async ({ cwd }, ...args) => {
   if (args.length !== 1) {
@@ -23,7 +24,7 @@ const calculateHash = async ({ cwd }, ...args) => {
   const pathToFile = pathResolver(cwd, ...args)
   const rs = createReadStream(pathToFile)
 
-  await pipeline(rs, hashTs, wsToLogger())
+  await pipeline(rs, createHashStream(), wsToLogger())
 }
 
 export const hash = {
