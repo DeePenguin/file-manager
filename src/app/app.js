@@ -2,6 +2,7 @@ import { createInterface } from 'node:readline/promises'
 
 import { cliArgsRegex } from './constants/cli-args-regex.js'
 import { startFlags } from './constants/flags.js'
+import { fs } from './modules/fs.js'
 import { hash } from './modules/hash.js'
 import { navigation } from './modules/navigation.js'
 import { gatherSystemInfo, os } from './modules/os.js'
@@ -26,6 +27,7 @@ export class App {
     navigation,
     hash,
     zlib,
+    fs,
   }
 
   run() {
